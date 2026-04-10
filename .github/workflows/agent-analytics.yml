@@ -1,0 +1,30 @@
+name: Agent - Analytics (週次分析)
+
+on:
+  schedule:
+    # 毎週月曜 09:00 JST = UTC 月曜 00:00
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+jobs:
+  analytics-agent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - name: Run analytics_agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/agents/analytics_agent.cjs
+      - name: Commit
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/ logs/
+          git diff --staged --quiet || git commit -m "analytics_agent: 週次分析 $(date +%Y-%m-%d)"
+          git push

@@ -1,0 +1,30 @@
+name: Agent - Monetization (収益化KPI)
+
+on:
+  schedule:
+    # 毎週日曜 10:00 JST = UTC 日曜 01:00
+    - cron: "0 1 * * 0"
+  workflow_dispatch:
+
+jobs:
+  monetization-agent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - name: Run monetization_agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/agents/monetization_agent.cjs
+      - name: Commit
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/ logs/
+          git diff --staged --quiet || git commit -m "monetization_agent: KPIレポート $(date +%Y-%m-%d)"
+          git push

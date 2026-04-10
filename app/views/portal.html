@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Income Note - 承認ポータル</title>
+  <style>
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1117;
+      --bg3: #161b22;
+      --bg4: #21262d;
+      --accent: #00e5a0;
+      --accent2: #00b882;
+      --accent3: #004d38;
+      --text: #e6edf3;
+      --text2: #8b949e;
+      --text3: #484f58;
+      --border: #30363d;
+      --danger: #f85149;
+      --warn: #e3b341;
+      --info: #58a6ff;
+      --sidebar-w: 220px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ─── サイドバー ─── */
+    #sidebar {
+      position: fixed; top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      padding: 16px 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 0 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .logo-icon { font-size: 22px; }
+    .sidebar-logo .logo-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--accent); margin-top: 4px;
+    }
+    .sidebar-logo .logo-sub { font-size: 11px; color: var(--text2); }
+    nav { flex: 1; padding: 12px 0; }
+    .nav-section { margin-bottom: 4px; }
+    .nav-label {
+      font-size: 11px; color: var(--text3); font-weight: 600;
+      text-transform: uppercase; letter-spacing: .08em;
+      padding: 8px 16px 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      cursor: pointer; border-radius: 0;
+      color: var(--text2); font-size: 13px;
+      transition: all .15s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active {
+      background: var(--accent3); color: var(--accent);
+      border-left-color: var(--accent);
+    }
+    .nav-item .badge {
+      margin-left: auto; background: var(--danger);
+      color: #fff; font-size: 11px; font-weight: 700;
+      border-radius: 10px; padding: 1px 7px; min-width: 20px;
+      text-align: center;
+    }
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px; color: var(--text3);
+    }
+
+    /* ─── メインコンテンツ ─── */
+    #main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── ヘッダー ─── */
+    .page-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header h1 { font-size: 20px; font-weight: 700; }
+    .page-header .hint { font-size: 12px; color: var(--text2); margin-left: auto; }
+
+    /* ─── PAT設定バー ─── */
+    #pat-bar {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    #pat-bar label { font-size: 12px; color: var(--text2); white-space: nowrap; }
+    #pat-input {
+      flex: 1; min-width: 200px;
+      background: var(--bg4); border: 1px solid var(--border);
+      color: var(--text); border-radius: 6px; padding: 6px 10px;
+      font-size: 13px; font-family: monospace;
+    }
+    .pat-status { font-size: 12px; white-space: nowrap; }
+    .pat-status.ok { color: var(--accent); }
+    .pat-status.ng { color: var(--danger); }
+
+    /* ─── カード ─── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 13px; font-weight: 700; color: var(--text2);
+      text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 16px;
+    }
+
+    /* ─── 承認カード ─── */
+    .approval-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .approval-card-header {
+      background: var(--bg3);
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .approval-card-header .file-name { font-size: 13px; font-weight: 600; }
+    .approval-card-header .date-badge {
+      background: var(--accent3); color: var(--accent);
+      font-size: 11px; border-radius: 4px; padding: 2px 8px;
+      margin-left: auto;
+    }
+    .pattern-tabs {
+      display: flex; border-bottom: 1px solid var(--border);
+    }
+    .pattern-tab {
+      flex: 1; text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 12px; font-weight: 600;
+      color: var(--text2);
+      border-right: 1px solid var(--border);
+      transition: all .15s;
+    }
+    .pattern-tab:last-child { border-right: none; }
+    .pattern-tab.active {
+      background: var(--bg3); color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+    }
+    .pattern-tab:hover:not(.active) { background: var(--bg4); }
+    .pattern-content {
+      padding: 16px;
+    }
+    .tweet-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-height: 80px;
+    }
+    .char-count {
+      text-align: right; font-size: 11px;
+      margin-top: 6px;
+      color: var(--text2);
+    }
+    .char-count.over { color: var(--danger); }
+    .approval-actions {
+      padding: 16px;
+      display: flex; gap: 8px; flex-wrap: wrap;
+      border-top: 1px solid var(--border);
+      background: var(--bg3);
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px; border: none;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all .15s;
+    }
+    .btn-A {
+      background: var(--accent); color: #080c10;
+    }
+    .btn-A:hover { background: var(--accent2); }
+    .btn-B {
+      background: var(--info); color: #080c10;
+    }
+    .btn-B:hover { background: #4090e0; }
+    .btn-C {
+      background: var(--warn); color: #080c10;
+    }
+    .btn-C:hover { background: #c49a2b; }
+    .btn-reject {
+      background: transparent; color: var(--danger);
+      border: 1px solid var(--danger);
+      margin-left: auto;
+    }
+    .btn-reject:hover { background: rgba(248,81,73,.1); }
+    .btn:disabled {
+      opacity: .4; cursor: not-allowed;
+    }
+
+    /* ─── エージェント状況 ─── */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .agent-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .agent-card .agent-name {
+      font-size: 13px; font-weight: 700; margin-bottom: 4px;
+    }
+    .agent-card .agent-time {
+      font-size: 11px; color: var(--text2); margin-bottom: 8px;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%; margin-right: 5px;
+    }
+    .status-dot.active { background: var(--accent); }
+    .status-dot.idle { background: var(--text3); }
+    .status-dot.error { background: var(--danger); }
+    .agent-desc { font-size: 12px; color: var(--text2); }
+
+    /* ─── スケジュール ─── */
+    .schedule-list { list-style: none; }
+    .schedule-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .schedule-item:last-child { border-bottom: none; }
+    .schedule-time {
+      background: var(--accent3);
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px; font-weight: 700;
+      min-width: 80px; text-align: center;
+    }
+    .schedule-desc { flex: 1; }
+    .schedule-freq { font-size: 11px; color: var(--text2); }
+
+    /* ─── リンク集 ─── */
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .link-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all .15s;
+      display: block;
+    }
+    .link-card:hover {
+      border-color: var(--accent);
+      background: var(--accent3);
+    }
+    .link-card .link-icon { font-size: 20px; margin-bottom: 6px; }
+    .link-card .link-name { font-size: 13px; font-weight: 600; }
+    .link-card .link-url { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+    /* ─── 投稿履歴 ─── */
+    .history-table {
+      width: 100%; border-collapse: collapse;
+    }
+    .history-table th {
+      background: var(--bg3);
+      padding: 8px 12px;
+      text-align: left; font-size: 12px;
+      color: var(--text2); font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+    .history-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .history-table tr:hover td { background: var(--bg3); }
+    .history-table .tweet-text {
+      max-width: 320px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .pattern-badge {
+      display: inline-block;
+      border-radius: 4px; padding: 1px 7px;
+      font-size: 11px; font-weight: 700;
+    }
+    .pattern-badge.A { background: var(--accent3); color: var(--accent); }
+    .pattern-badge.B { background: #1a2d4a; color: var(--info); }
+    .pattern-badge.C { background: #2a2210; color: var(--warn); }
+
+    /* ─── トースト ─── */
+    #toast-container {
+      position: fixed; bottom: 24px; right: 24px;
+      display: flex; flex-direction: column; gap: 8px;
+      z-index: 999;
+    }
+    .toast {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      max-width: 320px;
+      animation: slideIn .2s ease;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .toast.success { border-left: 3px solid var(--accent); }
+    .toast.error { border-left: 3px solid var(--danger); }
+    .toast.info { border-left: 3px solid var(--info); }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* ─── 空状態 ─── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--text2);
+    }
+    .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* ─── ローディング ─── */
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── レスポンシブ（スマホ） ─── */
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 0px; }
+      #sidebar {
+        width: 100%; height: auto; position: relative;
+        flex-direction: row; flex-wrap: wrap;
+        overflow-x: auto;
+      }
+      .sidebar-logo { display: none; }
+      nav { display: flex; padding: 4px 0; }
+      .nav-section { margin-bottom: 0; }
+      .nav-label { display: none; }
+      .nav-item { padding: 8px 14px; font-size: 12px; white-space: nowrap; }
+      .sidebar-footer { display: none; }
+      #main { margin-left: 0; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── サイドバー ─── -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">💰</div>
+    <div class="logo-title">AI Income Note</div>
+    <div class="logo-sub">承認ポータル</div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">メイン</div>
+      <div class="nav-item active" data-page="approval" onclick="showPage('approval', this)">
+        📬 承認待ち
+        <span class="badge" id="approval-badge" style="display:none">0</span>
+      </div>
+      <div class="nav-item" data-page="history" onclick="showPage('history', this)">
+        📜 投稿履歴
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">システム</div>
+      <div class="nav-item" data-page="agents" onclick="showPage('agents', this)">
+        🤖 エージェント
+      </div>
+      <div class="nav-item" data-page="schedule" onclick="showPage('schedule', this)">
+        🕐 スケジュール
+      </div>
+      <div class="nav-item" data-page="links" onclick="showPage('links', this)">
+        🔗 リンク集
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">設定</div>
+      <div class="nav-item" data-page="settings" onclick="showPage('settings', this)">
+        ⚙️ 設定
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="last-updated">読み込み中...</div>
+  </div>
+</div>
+
+<!-- ─── メインコンテンツ ─── -->
+<div id="main">
+
+  <!-- PAT設定バー（全ページ共通） -->
+  <div id="pat-bar">
+    <label>🔑 GitHub PAT:</label>
+    <input id="pat-input" type="password" placeholder="ghp_xxxxxxxxxxxx" oninput="savePat(this.value)" />
+    <span class="pat-status" id="pat-status">未設定</span>
+  </div>
+
+  <!-- ── 承認待ちページ ── -->
+  <div id="page-approval" class="page active">
+    <div class="page-header">
+      <h1>📬 承認待ち</h1>
+      <span class="hint" id="approval-hint">読み込み中...</span>
+    </div>
+    <div id="approval-list">
+      <div class="empty-state">
+        <div class="spinner"></div>
+        <p style="margin-top:12px">読み込み中...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 投稿履歴ページ ── -->
+  <div id="page-history" class="page">
+    <div class="page-header">
+      <h1>📜 投稿履歴</h1>
+      <span class="hint">直近30件</span>
+    </div>
+    <div class="card">
+      <div id="history-content">
+        <div class="empty-state"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── エージェントページ ── -->
+  <div id="page-agents" class="page">
+    <div class="page-header"><h1>🤖 エージェント状況</h1></div>
+    <div class="agent-grid">
+      <div class="agent-card">
+        <div class="agent-name"><span class="status-dot active"></span>trend_agent</div>
+        <div class="agent-time">毎日 06:00 JST</div>
+        <div class="agent-desc">AI×稼ぐ系トレンドキーワードを収集します</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-name"><span class="status-dot active"></span>research_agent</div>
+        <div class="agent-time">毎日 07:00 JST</div>
+        <div class="agent-desc">稼ぐ事例・AIツール情報をリサーチします</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-name"><span class="status-dot active"></span>content_agent</div>
+        <div class="agent-time">毎日 10:00 JST</div>
+        <div class="agent-desc">X投稿文A/B/C 3パターンを生成します</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-name"><span class="status-dot idle"></span>note_agent</div>
+        <div class="agent-time">毎日 11:00 JST</div>
+        <div class="agent-desc">note記事の下書きを生成します</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-name"><span class="status-dot idle"></span>analytics_agent</div>
+        <div class="agent-time">月曜 09:00 JST</div>
+        <div class="agent-desc">フォロワー数・エンゲージメントを分析します</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-name"><span class="status-dot idle"></span>monetization_agent</div>
+        <div class="agent-time">日曜 10:00 JST</div>
+        <div class="agent-desc">収益化KPIと改善提案を生成します</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── スケジュールページ ── -->
+  <div id="page-schedule" class="page">
+    <div class="page-header"><h1>🕐 実行スケジュール</h1></div>
+    <div class="card">
+      <ul class="schedule-list">
+        <li class="schedule-item">
+          <span class="schedule-time">06:00</span>
+          <span class="schedule-desc">trend_agent — トレンドキーワード収集</span>
+          <span class="schedule-freq">毎日</span>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">07:00</span>
+          <span class="schedule-desc">research_agent — 稼ぐ事例リサーチ</span>
+          <span class="schedule-freq">毎日</span>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">07:00</span>
+          <span class="schedule-desc">post-approved-x — 承認済みX投稿</span>
+          <span class="schedule-freq">毎日（承認済み時）</span>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">10:00</span>
+          <span class="schedule-desc">content_agent — X投稿文A/B/C生成</span>
+          <span class="schedule-freq">毎日</span>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">11:00</span>
+          <span class="schedule-desc">note_agent — note記事下書き生成</span>
+          <span class="schedule-freq">毎日</span>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">月曜 09:00</span>
+          <span class="schedule-desc">analytics_agent — エンゲージメント分析</span>
+          <span class="schedule-freq">毎週</span>
+        </li>
+        <li class="schedule-item">
+          <span class="schedule-time">日曜 10:00</span>
+          <span class="schedule-desc">monetization_agent — 収益化KPI・改善提案</span>
+          <span class="schedule-freq">毎週</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── リンク集ページ ── -->
+  <div id="page-links" class="page">
+    <div class="page-header"><h1>🔗 リンク集</h1></div>
+    <div class="link-grid">
+      <a class="link-card" href="https://github.com/itasuku9620-art/ai-income-note" target="_blank">
+        <div class="link-icon">📦</div>
+        <div class="link-name">GitHub リポジトリ</div>
+        <div class="link-url">ai-income-note</div>
+      </a>
+      <a class="link-card" href="https://github.com/itasuku9620-art/ai-income-note/actions" target="_blank">
+        <div class="link-icon">⚙️</div>
+        <div class="link-name">GitHub Actions</div>
+        <div class="link-url">ワークフロー実行状況</div>
+      </a>
+      <a class="link-card" href="https://note.com/light_thyme358" target="_blank">
+        <div class="link-icon">📝</div>
+        <div class="link-name">note</div>
+        <div class="link-url">light_thyme358</div>
+      </a>
+      <a class="link-card" href="https://twitter.com" target="_blank">
+        <div class="link-icon">🐦</div>
+        <div class="link-name">X (Twitter)</div>
+        <div class="link-url">投稿確認</div>
+      </a>
+      <a class="link-card" href="https://dashboard.render.com" target="_blank">
+        <div class="link-icon">🚀</div>
+        <div class="link-name">Render</div>
+        <div class="link-url">サーバー管理</div>
+      </a>
+      <a class="link-card" href="https://console.anthropic.com" target="_blank">
+        <div class="link-icon">🤖</div>
+        <div class="link-name">Anthropic Console</div>
+        <div class="link-url">API使用量確認</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── 設定ページ ── -->
+  <div id="page-settings" class="page">
+    <div class="page-header"><h1>⚙️ 設定</h1></div>
+    <div class="card">
+      <div class="card-title">GitHub PAT（Personal Access Token）</div>
+      <p style="color:var(--text2);font-size:13px;margin-bottom:12px">
+        承認ボタンを使うには、repository_dispatch 権限を持つPATが必要です。<br>
+        PATはブラウザのlocalStorageに保存されます（サーバーには送信されません）。
+      </p>
+      <input id="pat-input-settings" type="password" style="width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 12px;font-size:13px;font-family:monospace;margin-bottom:8px" placeholder="ghp_xxxxxxxxxxxx" oninput="savePat(this.value)" />
+      <p style="font-size:11px;color:var(--text2)">
+        取得方法: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens<br>
+        必要な権限: Actions (Read and write), Contents (Read and write)
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">リポジトリ設定</div>
+      <div style="font-size:13px;color:var(--text2)">
+        <div style="margin-bottom:6px">Owner: <code style="color:var(--accent)">itasuku9620-art</code></div>
+        <div style="margin-bottom:6px">Repo: <code style="color:var(--accent)">ai-income-note</code></div>
+        <div>Portal: <code style="color:var(--accent)">https://ai-income-note.onrender.com/portal</code></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── トーストコンテナ ─── -->
+<div id="toast-container"></div>
+
+<script>
+  // ─────────────────────────────────────────────
+  // 設定
+  // ─────────────────────────────────────────────
+  const REPO_OWNER = "itasuku9620-art";
+  const REPO_NAME = "ai-income-note";
+
+  // ─────────────────────────────────────────────
+  // ページ切り替え
+  // ─────────────────────────────────────────────
+  function showPage(pageId, el) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    document.getElementById("page-" + pageId).classList.add("active");
+    el.classList.add("active");
+
+    if (pageId === "approval") loadApproval();
+    if (pageId === "history") loadHistory();
+  }
+
+  // ─────────────────────────────────────────────
+  // PAT管理
+  // ─────────────────────────────────────────────
+  function savePat(val) {
+    localStorage.setItem("github_pat", val);
+    // 両方のinputを同期
+    document.querySelectorAll("#pat-input, #pat-input-settings").forEach(el => {
+      if (el.value !== val) el.value = val;
+    });
+    updatePatStatus();
+  }
+
+  function updatePatStatus() {
+    const pat = localStorage.getItem("github_pat") || "";
+    const statusEl = document.getElementById("pat-status");
+    if (pat.startsWith("ghp_") || pat.startsWith("github_pat_")) {
+      statusEl.textContent = "✓ 設定済み";
+      statusEl.className = "pat-status ok";
+    } else if (pat.length > 0) {
+      statusEl.textContent = "⚠ 形式を確認";
+      statusEl.className = "pat-status ng";
+    } else {
+      statusEl.textContent = "未設定";
+      statusEl.className = "pat-status ng";
+    }
+  }
+
+  function getPat() {
+    return localStorage.getItem("github_pat") || "";
+  }
+
+  // ─────────────────────────────────────────────
+  // トースト
+  // ─────────────────────────────────────────────
+  function showToast(msg, type = "info", duration = 4000) {
+    const container = document.getElementById("toast-container");
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    const icons = { success: "✅", error: "❌", info: "ℹ️" };
+    el.innerHTML = `<span>${icons[type] || "ℹ️"}</span><span>${msg}</span>`;
+    container.appendChild(el);
+    setTimeout(() => { el.style.opacity = "0"; el.style.transition = "opacity .3s"; setTimeout(() => el.remove(), 300); }, duration);
+  }
+
+  // ─────────────────────────────────────────────
+  // 承認待ち読み込み
+  // ─────────────────────────────────────────────
+  async function loadApproval() {
+    const container = document.getElementById("approval-list");
+    container.innerHTML = '<div class="empty-state"><div class="spinner"></div><p style="margin-top:12px">読み込み中...</p></div>';
+
+    try {
+      const res = await fetch("/api/pending");
+      const items = await res.json();
+
+      // バッジ更新
+      const pendingCount = items.filter(i => i.filename.startsWith("x_")).length;
+      const badge = document.getElementById("approval-badge");
+      badge.textContent = pendingCount;
+      badge.style.display = pendingCount > 0 ? "inline" : "none";
+      document.getElementById("approval-hint").textContent = `${pendingCount}件の承認待ち`;
+
+      if (items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎉</div><p>承認待ちのコンテンツはありません</p></div>';
+        return;
+      }
+
+      const xItems = items.filter(i => i.filename.startsWith("x_"));
+      const noteItems = items.filter(i => i.filename.startsWith("note_"));
+
+      let html = "";
+
+      for (const item of xItems) {
+        const patterns = parseMarkdownPatterns(item.content);
+        const dateMatch = item.filename.match(/x_(\d{4}-\d{2}-\d{2})/);
+        const dateStr = dateMatch ? dateMatch[1] : item.filename;
+
+        html += `
+        <div class="approval-card" id="card-${item.filename}">
+          <div class="approval-card-header">
+            <span>🐦</span>
+            <span class="file-name">${item.filename}</span>
+            <span class="date-badge">${dateStr}</span>
+          </div>
+          <div class="pattern-tabs">
+            <div class="pattern-tab active" id="tab-A-${dateStr}" onclick="switchTab('${dateStr}', 'A')">A（事例型）</div>
+            <div class="pattern-tab" id="tab-B-${dateStr}" onclick="switchTab('${dateStr}', 'B')">B（問いかけ）</div>
+            <div class="pattern-tab" id="tab-C-${dateStr}" onclick="switchTab('${dateStr}', 'C')">C（数字型）</div>
+          </div>
+          <div class="pattern-content">
+            <div id="content-A-${dateStr}" class="pattern-pane">
+              <div class="tweet-preview">${escapeHtml(patterns.A)}</div>
+              <div class="char-count ${charClass(patterns.A)}">${[...patterns.A].length}/140文字</div>
+            </div>
+            <div id="content-B-${dateStr}" class="pattern-pane" style="display:none">
+              <div class="tweet-preview">${escapeHtml(patterns.B)}</div>
+              <div class="char-count ${charClass(patterns.B)}">${[...patterns.B].length}/140文字</div>
+            </div>
+            <div id="content-C-${dateStr}" class="pattern-pane" style="display:none">
+              <div class="tweet-preview">${escapeHtml(patterns.C)}</div>
+              <div class="char-count ${charClass(patterns.C)}">${[...patterns.C].length}/140文字</div>
+            </div>
+          </div>
+          <div class="approval-actions">
+            <button class="btn btn-A" onclick="approveX('${item.filename}', 'A', this)">✅ パターンAで投稿</button>
+            <button class="btn btn-B" onclick="approveX('${item.filename}', 'B', this)">✅ パターンBで投稿</button>
+            <button class="btn btn-C" onclick="approveX('${item.filename}', 'C', this)">✅ パターンCで投稿</button>
+            <button class="btn btn-reject" onclick="rejectPost('${item.filename}', this)">🗑 却下</button>
+          </div>
+        </div>`;
+      }
+
+      for (const item of noteItems) {
+        html += `
+        <div class="approval-card">
+          <div class="approval-card-header">
+            <span>📝</span>
+            <span class="file-name">${item.filename}</span>
+            <span class="date-badge">note</span>
+          </div>
+          <div class="pattern-content">
+            <div class="tweet-preview" style="font-size:12px;max-height:200px;overflow-y:auto">${escapeHtml(item.content)}</div>
+          </div>
+          <div class="approval-actions">
+            <button class="btn btn-A" onclick="approveNote('${item.filename}', this)">✅ noteに公開</button>
+            <button class="btn btn-reject" onclick="rejectPost('${item.filename}', this)">🗑 却下</button>
+          </div>
+        </div>`;
+      }
+
+      container.innerHTML = html;
+    } catch (err) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">❌</div><p>読み込みエラー: ${err.message}</p></div>`;
+    }
+  }
+
+  function charClass(text) {
+    return [...text].length > 140 ? "over" : "";
+  }
+
+  function switchTab(dateStr, pattern) {
+    ["A", "B", "C"].forEach(p => {
+      document.getElementById(`tab-${p}-${dateStr}`).classList.toggle("active", p === pattern);
+      const pane = document.getElementById(`content-${p}-${dateStr}`);
+      if (pane) pane.style.display = p === pattern ? "block" : "none";
+    });
+  }
+
+  function parseMarkdownPatterns(content) {
+    const patterns = { A: "", B: "", C: "" };
+    const blockA = content.match(/## パターンA.*?\n([\s\S]*?)(?=---|\n##|$)/);
+    const blockB = content.match(/## パターンB.*?\n([\s\S]*?)(?=---|\n##|$)/);
+    const blockC = content.match(/## パターンC.*?\n([\s\S]*?)(?=---|\n##|$)/);
+    if (blockA) patterns.A = blockA[1].trim();
+    if (blockB) patterns.B = blockB[1].trim();
+    if (blockC) patterns.C = blockC[1].trim();
+    return patterns;
+  }
+
+  // ─────────────────────────────────────────────
+  // X 承認
+  // ─────────────────────────────────────────────
+  async function approveX(filename, pattern, btn) {
+    const pat = getPat();
+    if (!pat) {
+      showToast("GitHub PATを設定してください", "error");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "送信中...";
+
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `token ${pat}`,
+            Accept: "application/vnd.github.v3+json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            event_type: "approved-x-post",
+            client_payload: {
+              selected_pattern: pattern,
+              source_file: filename,
+              approved_at: new Date().toISOString(),
+            },
+          }),
+        }
+      );
+
+      if (res.status === 204) {
+        showToast(`✅ パターン${pattern}でX投稿をスケジュールしました！翌朝7時に投稿されます。`, "success", 6000);
+        document.getElementById(`card-${filename}`)?.remove();
+      } else {
+        const err = await res.text();
+        throw new Error(`GitHub API: ${res.status} ${err}`);
+      }
+    } catch (err) {
+      showToast(`エラー: ${err.message}`, "error");
+      btn.disabled = false;
+      btn.textContent = `✅ パターン${pattern}で投稿`;
+    }
+  }
+
+  async function rejectPost(filename, btn) {
+    if (!confirm(`「${filename}」を却下しますか？`)) return;
+    btn.disabled = true;
+    // ローカルでは単純にカードを非表示
+    document.getElementById(`card-${filename}`)?.remove();
+    showToast("却下しました", "info");
+  }
+
+  async function approveNote(filename, btn) {
+    showToast("note自動投稿は準備中です", "info");
+  }
+
+  // ─────────────────────────────────────────────
+  // 投稿履歴読み込み
+  // ─────────────────────────────────────────────
+  async function loadHistory() {
+    const container = document.getElementById("history-content");
+    try {
+      const res = await fetch("/api/history");
+      const items = await res.json();
+
+      if (items.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>投稿履歴はまだありません</p></div>';
+        return;
+      }
+
+      let html = '<table class="history-table"><thead><tr><th>日付</th><th>パターン</th><th>ツイート</th><th>ID</th></tr></thead><tbody>';
+      for (const item of items) {
+        html += `<tr>
+          <td>${item.date}</td>
+          <td><span class="pattern-badge ${item.pattern}">${item.pattern}</span></td>
+          <td class="tweet-text">${escapeHtml(item.text)}</td>
+          <td><a href="https://twitter.com/i/web/status/${item.tweet_id}" target="_blank" style="color:var(--info);font-size:11px">🔗</a></td>
+        </tr>`;
+      }
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    } catch {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">❌</div><p>読み込みエラー</p></div>';
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // ユーティリティ
+  // ─────────────────────────────────────────────
+  function escapeHtml(str) {
+    return (str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // ─────────────────────────────────────────────
+  // 初期化
+  // ─────────────────────────────────────────────
+  function init() {
+    const pat = localStorage.getItem("github_pat") || "";
+    document.querySelectorAll("#pat-input, #pat-input-settings").forEach(el => el.value = pat);
+    updatePatStatus();
+    loadApproval();
+
+    document.getElementById("last-updated").textContent =
+      "更新: " + new Date().toLocaleTimeString("ja-JP");
+  }
+
+  init();
+</script>
+</body>
+</html>
