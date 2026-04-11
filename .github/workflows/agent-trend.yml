@@ -27,5 +27,5 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add data/
           git diff --staged --quiet || git commit -m "trend_agent: キーワード更新 $(date +%Y-%m-%d)"
-          git pull --rebase origin main
+          git pull --no-rebase -X ours origin main
           git push

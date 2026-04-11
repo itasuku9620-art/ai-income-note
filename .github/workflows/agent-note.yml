@@ -27,5 +27,5 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add data/ pending_approval/ outputs/
           git diff --staged --quiet || git commit -m "note_agent: 記事下書き生成 $(date +%Y-%m-%d)"
-          git pull --rebase origin main
+          git pull --no-rebase -X ours origin main
           git push
