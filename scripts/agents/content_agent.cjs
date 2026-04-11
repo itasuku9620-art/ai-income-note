@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const NOTE_URL = "note.com/light_thyme358";
+const NOTE_URL = "note.com/merry_rat4885";
 const MAX_LENGTH = 140;
 
 // ─────────────────────────────────────────────
