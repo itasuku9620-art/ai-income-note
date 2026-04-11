@@ -46,7 +46,7 @@ function ensureDir(dir) {
 
 async function callClaude(systemPrompt, userPrompt) {
   const { default: fetch } = await import("node-fetch");
-  const apiKey = ANTHROPIC_API_KEY.trim().replace(/[\r\n\s]/g, "");
+  const apiKey = ANTHROPIC_API_KEY.replace(/[^\x20-\x7E]/g, "");
 
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
