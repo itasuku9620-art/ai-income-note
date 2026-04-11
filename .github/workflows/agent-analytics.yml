@@ -27,4 +27,5 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add data/ logs/
           git diff --staged --quiet || git commit -m "analytics_agent: 週次分析 $(date +%Y-%m-%d)"
+          git pull --rebase origin main
           git push
