@@ -1,0 +1,16 @@
+{
+  "cycles": [
+    {
+      "date": "2026-04-11",
+      "trend_context": "今日のトレンドキーワード: AI副業、ChatGPT稼ぐ、AI画像生成副業、note収益化、AIライティング副業",
+      "patterns_generated": {
+        "A": "AI × 画像生成で月3万円。やったこと→ ①Midjourneyでロゴ作成サービス開始 ②ココナラ",
+        "B": "AIで副業してる人に聞きたい！ChatGPTのプロンプト最適化って意識してますか？知らないと損な理由",
+        "C": "【実証】AIツール5個使って月収+8万円になった話。一番効いたのはChatGPTでのライティング代行"
+      },
+      "status": "pending_approval"
+    }
+  ],
+  "total_generated": 1,
+  "last_run": "2026-04-11T14:29:26.577Z"
+}
