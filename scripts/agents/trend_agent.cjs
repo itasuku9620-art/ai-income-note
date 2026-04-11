@@ -28,11 +28,12 @@ function ensureDir(dir) {
 
 async function callClaude(prompt) {
   const { default: fetch } = await import("node-fetch");
+  const apiKey = ANTHROPIC_API_KEY.trim().replace(/[\r\n\s]/g, "");
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": ANTHROPIC_API_KEY,
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
