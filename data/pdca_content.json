@@ -9,8 +9,18 @@
         "C": "【実証】AIツール5個使って月収+8万円になった話。一番効いたのはChatGPTでのライティング代行"
       },
       "status": "pending_approval"
+    },
+    {
+      "date": "2026-04-11",
+      "trend_context": "今日のトレンドキーワード: AI副業、ChatGPT稼ぐ、AI画像生成副業、note収益化、AIライティング副業",
+      "patterns_generated": {
+        "A": "AI × note執筆で月3万円。やったこと→ ①ChatGPTで記事構成作成 ②AI画像生成でアイ",
+        "B": "AIで副業してる人に聞きたい！ChatGPTのプロンプトって最適化してますか？知らないと損な理由→ ",
+        "C": "【実証】AIツール5個使って月収+4万円になった話。一番効いたのはChatGPT×画像生成の組み合わ"
+      },
+      "status": "pending_approval"
     }
   ],
-  "total_generated": 1,
-  "last_run": "2026-04-11T14:29:26.577Z"
+  "total_generated": 2,
+  "last_run": "2026-04-11T14:31:56.740Z"
 }

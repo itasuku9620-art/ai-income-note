@@ -12,5 +12,19 @@
     "pending_file": "x_2026-04-11.md",
     "created_at": "2026-04-11T14:29:26.577Z",
     "status": "pending"
+  },
+  {
+    "id": "x_2026-04-11_1775917916739",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-04-11",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "AI × note執筆で月3万円。やったこと→ ①ChatG…",
+      "B": "AIで副業してる人に聞きたい！ChatGPTのプロンプトって…",
+      "C": "【実証】AIツール5個使って月収+4万円になった話。一番効い…"
+    },
+    "pending_file": "x_2026-04-11.md",
+    "created_at": "2026-04-11T14:31:56.739Z",
+    "status": "pending"
   }
 ]
