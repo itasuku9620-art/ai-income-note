@@ -156,7 +156,7 @@ async function claudeBuzzAnalysis() {
   "viral_overseas": [
     {
       "text": "実際にバズりそうな英語ツイート本文（事実ベース）",
-      "ja_summary": "日本語要約（引用投稿に使える形式）",
+      "ja_summary": "完全日本語訳（英語を一切含まず、そのままX投稿の引用文として使える形式）",
       "likes_estimate": 数値,
       "topic": "トピック名",
       "account_type": "インフルエンサー/研究者/起業家 など"
