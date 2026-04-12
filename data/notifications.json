@@ -87,5 +87,19 @@
     "pending_file": "x_2026-04-12.md",
     "created_at": "2026-04-12T15:17:56.859Z",
     "status": "pending"
+  },
+  {
+    "id": "x_2026-04-12_1776007487188",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-04-12",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で1万8千いいね│「AI生成教育コースをUdemyで販売…",
+      "B": "【データ】IDC市場調査によると、AI生成コンテンツ市場は2…",
+      "C": "いま海外でバズってる話→AIエージェント群による協調作業シス…"
+    },
+    "pending_file": "x_2026-04-12.md",
+    "created_at": "2026-04-12T15:24:47.188Z",
+    "status": "pending"
   }
 ]
