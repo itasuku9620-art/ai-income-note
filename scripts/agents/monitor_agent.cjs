@@ -157,6 +157,7 @@ async function claudeBuzzAnalysis() {
     {
       "text": "実際にバズりそうな英語ツイート本文（事実ベース）",
       "ja_summary": "完全日本語訳（英語を一切含まず、そのままX投稿の引用文として使える形式）",
+      "citation": "引用元（例: 海外X @username / Forbes / McKinseyレポート2025 など）",
       "likes_estimate": 数値,
       "topic": "トピック名",
       "account_type": "インフルエンサー/研究者/起業家 など"
@@ -166,6 +167,7 @@ async function claudeBuzzAnalysis() {
     {
       "fact": "引用できる具体的な数字や事実（英語圏のデータ）",
       "source_hint": "データの出典ヒント（例: McKinsey report, OpenAI統計 など）",
+      "citation": "正確な引用元表記（例: McKinseyレポート2025 / IDC Market Forecast 2025）",
       "ja_use": "日本語投稿での活用方法"
     }
   ],

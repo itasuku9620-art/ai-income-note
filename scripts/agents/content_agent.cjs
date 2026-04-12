@@ -8,8 +8,11 @@ const fs = require("fs");
 const path = require("path");
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const NOTE_URL = "note.com/merry_rat4885";
-const MAX_LENGTH = 140;
+const GTH_PAT           = process.env.GTH_PAT;
+const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY || "itasuku9620-art/ai-income-note";
+const NOTE_URL          = "note.com/merry_rat4885";
+const MAX_LENGTH        = 140;
+const AUTO_POST_SCORE   = 7; // 事実性スコア >= この値で自動投稿
 
 // ─────────────────────────────────────────────
 // ユーティリティ
@@ -110,13 +113,13 @@ async function generateXPatterns(trendContext, buzzContext) {
   if (hasBuzz) {
     if (buzzContext.overseas.length > 0) {
       const overseasLines = buzzContext.overseas
-        .map(o => `・[${o.account_type}] ${o.ja_summary}（推定${(o.likes_estimate || 0).toLocaleString()}いいね）`)
+        .map(o => `・[${o.account_type}] ${o.ja_summary}（推定${(o.likes_estimate || 0).toLocaleString()}いいね／引用元: ${o.citation || "海外X"}）`)
         .join("\n");
       buzzSection += `\n\n【海外バイラルコンテンツ（引用素材）】\n${overseasLines}`;
     }
     if (buzzContext.stats.length > 0) {
       const statsLines = buzzContext.stats
-        .map(s => `・${s.fact}（出典ヒント: ${s.source_hint}）`)
+        .map(s => `・${s.fact}（引用元: ${s.citation || s.source_hint}）`)
         .join("\n");
       buzzSection += `\n\n【引用できる事実・統計データ】\n${statsLines}`;
     }
@@ -138,9 +141,9 @@ Xで毎朝投稿する日本語ツイートを3パターン生成してくださ
 
 【パターン定義】
 ${hasBuzz
-  ? `A（海外引用型）: 海外バイラルコンテンツを全て日本語に翻訳して引用。英語は一切使わない。形式：「海外で○万いいね│"（日本語訳）" → 日本語コメント」
-B（事実・統計型）: 「【データ】○○の調査によると…AIで副業する人の○%が〜という事実」（出典も日本語に翻訳）
-C（バズ便乗型）: 「いま海外でバズってる話 → ○○。日本でも同じことできる理由→」（全て日本語）`
+  ? `A（海外引用型）: 海外バイラルコンテンツを全て日本語に翻訳して引用。英語は一切使わない。末尾に「（出典：{引用元}）」を付記。形式：「海外で○万いいね│"（日本語訳）" → 日本語コメント（出典：〇〇）」
+B（事実・統計型）: 「【データ】○○の調査によると…という事実（出典：{レポート名}）」末尾に引用元を必ず付記。
+C（バズ便乗型）: 「いま海外でバズってる話 → ○○。日本でも同じことできる理由→」末尾に「（出典：〇〇）」を付記。（全て日本語）`
   : `A（事例型）: 「AI × ○○で月○万円。やったこと→ 箇条書き3つ。」
 B（問いかけ型）: 「AIで副業してる人に聞きたい/○○って使ってますか？ 知らないと損な理由→」
 C（数字型）: 「【実証】AIツール○個使って月収+○万円になった話。一番効いたのは○○→」`}`;
@@ -167,6 +170,89 @@ function parsePatterns(raw) {
 }
 
 // ─────────────────────────────────────────────
+// 事実性スコア判定
+// ─────────────────────────────────────────────
+
+async function evaluateFactuality(patterns) {
+  const prompt = `以下のX（Twitter）投稿文の事実性を評価してください。
+
+パターンA:
+${patterns.A}
+
+パターンB:
+${patterns.B}
+
+パターンC:
+${patterns.C}
+
+評価基準:
+- 10: 公的機関・著名調査機関の数値を正確に引用
+- 8-9: 信頼できる出典付きの事実ベース、数値も妥当
+- 6-7: 概ね事実ベースだが出典が曖昧または数値が推定
+- 4-5: 一部事実ベースだが誇張や主観が含まれる
+- 1-3: 主観的・誇張が多い・事実確認困難
+
+JSONのみ出力（説明不要）:
+{
+  "A": {"score": 数値, "reason": "理由（20字以内）", "auto_post": true/false},
+  "B": {"score": 数値, "reason": "理由（20字以内）", "auto_post": true/false},
+  "C": {"score": 数値, "reason": "理由（20字以内）", "auto_post": true/false},
+  "best_pattern": "最も事実性の高いパターン（A/B/C）"
+}
+
+auto_post は score >= ${AUTO_POST_SCORE} の場合 true`;
+
+  const raw = await callClaude("", prompt);
+  try {
+    const clean = raw.replace(/```json|```/g, "").trim();
+    return JSON.parse(clean);
+  } catch {
+    return {
+      A: { score: 5, reason: "判定失敗", auto_post: false },
+      B: { score: 5, reason: "判定失敗", auto_post: false },
+      C: { score: 5, reason: "判定失敗", auto_post: false },
+      best_pattern: "A",
+    };
+  }
+}
+
+// ─────────────────────────────────────────────
+// GitHub repository_dispatch で自動投稿トリガー
+// ─────────────────────────────────────────────
+
+async function triggerAutoPost(pattern) {
+  if (!GTH_PAT) {
+    console.log("⚠️  GTH_PAT 未設定のため自動投稿スキップ");
+    return false;
+  }
+
+  const { default: fetch } = await import("node-fetch");
+  const url = `https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization:  `token ${GTH_PAT}`,
+      Accept:         "application/vnd.github+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      event_type:    "approved-x-post",
+      client_payload: { selected_pattern: pattern },
+    }),
+  });
+
+  if (res.status === 204) {
+    console.log(`🚀 自動投稿トリガー完了: パターン${pattern}`);
+    return true;
+  } else {
+    const body = await res.text();
+    console.warn(`⚠️  自動投稿トリガー失敗: ${res.status} ${body}`);
+    return false;
+  }
+}
+
+// ─────────────────────────────────────────────
 // ファイル保存
 // ─────────────────────────────────────────────
 
@@ -181,25 +267,36 @@ function savePatternFiles(patterns) {
   console.log("✅ data/x_pattern_A/B/C.txt 保存完了");
 }
 
-function savePendingApproval(patterns) {
+function savePendingApproval(patterns, factuality, hasBuzz) {
   const dir = path.join(__dirname, "../../pending_approval");
   ensureDir(dir);
   const dateStr = today();
   const filePath = path.join(dir, `x_${dateStr}.md`);
 
-  const content = `# X投稿承認待ち - ${dateStr}
+  const typeLabel = hasBuzz
+    ? { A: "海外引用型", B: "事実・統計型", C: "バズ便乗型" }
+    : { A: "事例型",     B: "問いかけ型",   C: "数字型"     };
 
-## パターンA（事例型）
+  const scoreLabel = (key) => {
+    if (!factuality || !factuality[key]) return "";
+    const f = factuality[key];
+    const mark = f.auto_post ? "✅ 自動投稿済み" : `⏳ 承認待ち（事実性スコア: ${f.score}/10）`;
+    return `\n> ${mark}　理由: ${f.reason}`;
+  };
+
+  const content = `# X投稿 - ${dateStr}
+
+## パターンA（${typeLabel.A}）${scoreLabel("A")}
 ${patterns.A}
 
 ---
 
-## パターンB（問いかけ型）
+## パターンB（${typeLabel.B}）${scoreLabel("B")}
 ${patterns.B}
 
 ---
 
-## パターンC（数字型）
+## パターンC（${typeLabel.C}）${scoreLabel("C")}
 ${patterns.C}
 
 ---
@@ -299,11 +396,29 @@ async function main() {
   console.log("C:", patterns.C);
   console.log("----------------\n");
 
+  // 事実性判定
+  console.log("🔍 事実性スコアを判定中...");
+  const factuality = await evaluateFactuality(patterns);
+  console.log(`📊 スコア → A:${factuality.A?.score} B:${factuality.B?.score} C:${factuality.C?.score}`);
+  console.log(`🏆 最高スコア: パターン${factuality.best_pattern}`);
+
   savePatternFiles(patterns);
-  savePendingApproval(patterns);
+  const hasBuzz = buzzContext && (buzzContext.overseas.length > 0 || buzzContext.stats.length > 0);
+  savePendingApproval(patterns, factuality, hasBuzz);
   addNotification(patterns);
   updatePdca(patterns, trendContext);
 
+  // 事実性スコア >= AUTO_POST_SCORE のパターンを自動投稿
+  let autoPosted = false;
+  const bestPattern = factuality.best_pattern || "A";
+  if (factuality[bestPattern]?.auto_post) {
+    console.log(`\n🚀 事実性スコア${factuality[bestPattern].score}/10 → パターン${bestPattern}を自動投稿します`);
+    autoPosted = await triggerAutoPost(bestPattern);
+  } else {
+    console.log(`\n⏳ 事実性スコアが基準未満（最高: ${factuality[bestPattern]?.score}/10）→ 承認待ちに保存`);
+  }
+
+  console.log(autoPosted ? "✅ 自動投稿完了" : "✅ 承認待ちに保存");
   console.log("✅ content_agent 完了:", new Date().toISOString());
 }
 

@@ -26,7 +26,9 @@ jobs:
 
       - name: Run content_agent
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
+          GTH_PAT:            ${{ secrets.GTH_PAT }}
+          GITHUB_REPOSITORY:  ${{ github.repository }}
         run: node scripts/agents/content_agent.cjs
 
       - name: Commit generated files
