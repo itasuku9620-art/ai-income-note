@@ -147,27 +147,36 @@ async function callClaude(prompt) {
 }
 
 async function claudeBuzzAnalysis() {
-  const prompt = `あなたはSNSマーケティングの専門家です。
-現在（2026年4月）の海外X（Twitter）でバズっているAI副業・AI収益化関連のコンテンツを分析してください。
+  const prompt = `あなたはAIビジネスリサーチの専門家です。
+以下の実在する調査・レポートに基づいたAI副業・収益化コンテンツを生成してください。
+
+【使用可能な実在データ源】
+- McKinsey Global Institute「The economic potential of generative AI」2023
+- GitHub「The Impact of AI on Developer Productivity」2023（Copilot導入で生産性55%向上）
+- Upwork「Future Workforce Report 2024」（AIフリーランサー需要250%増）
+- World Economic Forum「Future of Jobs Report 2025」（AI関連職97M件創出予測）
+- Stanford HAI「AI Index Report 2024」
+- OpenAI公式統計（ChatGPT週間ユーザー1億人超、2024年）
+- Anthropic・Google・Microsoft各社の公式発表
 
 以下の形式でJSONのみ出力してください（説明不要）:
 
 {
   "viral_overseas": [
     {
-      "text": "実際にバズりそうな英語ツイート本文（事実ベース）",
-      "ja_summary": "完全日本語訳（英語を一切含まず、そのままX投稿の引用文として使える形式）",
-      "citation": "引用元（例: 海外X @username / Forbes / McKinseyレポート2025 など）",
+      "text": "上記実在データに基づいた英語ツイート想定文",
+      "ja_summary": "完全日本語訳（英語を一切含まず、引用文として使える形式。数値は控えめ・保守的に）",
+      "citation": "引用元（必ず上記リストから選ぶ。例: McKinsey GI レポート2023）",
       "likes_estimate": 数値,
       "topic": "トピック名",
-      "account_type": "インフルエンサー/研究者/起業家 など"
+      "account_type": "研究者/アナリスト/起業家 など"
     }
   ],
   "viral_stats": [
     {
-      "fact": "引用できる具体的な数字や事実（英語圏のデータ）",
-      "source_hint": "データの出典ヒント（例: McKinsey report, OpenAI統計 など）",
-      "citation": "正確な引用元表記（例: McKinseyレポート2025 / IDC Market Forecast 2025）",
+      "fact": "実在レポートから引用した具体的な数値・事実",
+      "source_hint": "レポート名・発行元",
+      "citation": "正確な引用元（例: McKinsey GIレポート2023 / WEF Jobs Report 2025）",
       "ja_use": "日本語投稿での活用方法"
     }
   ],
@@ -176,10 +185,9 @@ async function claudeBuzzAnalysis() {
 }
 
 条件:
-- viral_overseas は5件
-- viral_stats は5件
-- 事実ベースまたは高い蓋然性のある情報のみ
-- 誇大表現や虚偽は避ける`;
+- viral_overseas は5件、viral_stats は5件
+- 全て実在するレポート・公式発表からの引用のみ
+- 誇張なし・数値は原典に忠実に`;
 
   const raw = await callClaude(prompt);
   const clean = raw.replace(/```json|```/g, "").trim();

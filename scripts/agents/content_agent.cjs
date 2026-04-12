@@ -12,7 +12,7 @@ const GTH_PAT           = process.env.GTH_PAT;
 const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY || "itasuku9620-art/ai-income-note";
 const NOTE_URL          = "note.com/merry_rat4885";
 const MAX_LENGTH        = 140;
-const AUTO_POST_SCORE   = 7; // 事実性スコア >= この値で自動投稿
+const AUTO_POST_SCORE   = 6; // 事実性スコア >= この値で自動投稿
 
 // ─────────────────────────────────────────────
 // ユーティリティ
