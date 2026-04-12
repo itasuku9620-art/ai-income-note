@@ -87,5 +87,20 @@
     "pending_file": "x_2026-04-12.md",
     "created_at": "2026-04-12T15:17:56.859Z",
     "status": "pending"
+  },
+  {
+    "id": "monitor_2026-04-12_1776007503507",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-04-12",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent Automation",
+      "Prompt Engineering Monetization",
+      "AI-Generated Course Sales",
+      "No-Code AI Business Building",
+      "AI Consulting for SMBs"
+    ],
+    "created_at": "2026-04-12T15:25:03.507Z",
+    "status": "info"
   }
 ]
