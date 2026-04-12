@@ -73,7 +73,7 @@ async function callClaude(systemPrompt, userPrompt) {
 }
 
 // ─────────────────────────────────────────────
-// トレンドキャッシュ読み込み（あれば活用）
+// トレンド・バズキャッシュ読み込み
 // ─────────────────────────────────────────────
 
 function loadTrendContext() {
@@ -85,12 +85,47 @@ function loadTrendContext() {
   return "AI副業、ChatGPT活用、自動化収益、noteマネタイズ、フリーランスAI";
 }
 
+function loadBuzzContext() {
+  const buzzPath = path.join(__dirname, "../../data/buzz_cache.json");
+  const buzz = readJson(buzzPath, null);
+  if (!buzz) return null;
+
+  return {
+    overseas: (buzz.viral_overseas || []).slice(0, 3),
+    stats:    (buzz.viral_stats    || []).slice(0, 3),
+    topics:   (buzz.hot_topics     || []).slice(0, 5),
+    date:     buzz.date,
+  };
+}
+
 // ─────────────────────────────────────────────
 // X投稿文 3パターン生成
 // ─────────────────────────────────────────────
 
-async function generateXPatterns(trendContext) {
-  const systemPrompt = `あなたはAI副業・note収益化の専門家です。
+async function generateXPatterns(trendContext, buzzContext) {
+  // バズデータがある場合は海外引用・事実ベースで生成
+  const hasBuzz = buzzContext && (buzzContext.overseas.length > 0 || buzzContext.stats.length > 0);
+
+  let buzzSection = "";
+  if (hasBuzz) {
+    if (buzzContext.overseas.length > 0) {
+      const overseasLines = buzzContext.overseas
+        .map(o => `・[${o.account_type}] ${o.ja_summary}（推定${(o.likes_estimate || 0).toLocaleString()}いいね）`)
+        .join("\n");
+      buzzSection += `\n\n【海外バイラルコンテンツ（引用素材）】\n${overseasLines}`;
+    }
+    if (buzzContext.stats.length > 0) {
+      const statsLines = buzzContext.stats
+        .map(s => `・${s.fact}（出典ヒント: ${s.source_hint}）`)
+        .join("\n");
+      buzzSection += `\n\n【引用できる事実・統計データ】\n${statsLines}`;
+    }
+    if (buzzContext.topics.length > 0) {
+      buzzSection += `\n\n【海外ホットトピック】${buzzContext.topics.join("、")}`;
+    }
+  }
+
+  const systemPrompt = `あなたはAI副業・note収益化の専門家で、SNSバイラルの仕組みを熟知しています。
 Xで毎朝投稿する日本語ツイートを3パターン生成してください。
 
 【絶対条件】
@@ -98,15 +133,21 @@ Xで毎朝投稿する日本語ツイートを3パターン生成してくださ
 - 本文テキストのみ出力（説明・ラベル・番号は不要）
 - 3パターンを "===A===" "===B===" "===C===" で区切る
 - ハッシュタグ: #AI副業 #AIで稼ぐ
+- 誇大表現・虚偽は絶対に使わない
+- 事実・統計・海外事例を積極的に引用する
 
 【パターン定義】
-A（事例型）: 「AI × ○○で月○万円。やったこと→ 箇条書き3つ。」
+${hasBuzz
+  ? `A（海外引用型）: 「海外で○万いいね│"英語バズツイートの要点" → 日本語解説」
+B（事実・統計型）: 「【データ】○○の調査によると…AIで副業する人の○%が〜という事実」
+C（バズ便乗型）: 「いま海外でバズってる話 → ○○。日本でも同じことできる理由→」`
+  : `A（事例型）: 「AI × ○○で月○万円。やったこと→ 箇条書き3つ。」
 B（問いかけ型）: 「AIで副業してる人に聞きたい/○○って使ってますか？ 知らないと損な理由→」
-C（数字型）: 「【実証】AIツール○個使って月収+○万円になった話。一番効いたのは○○→」`;
+C（数字型）: 「【実証】AIツール○個使って月収+○万円になった話。一番効いたのは○○→」`}`;
 
-  const userPrompt = `今日のコンテキスト: ${trendContext}
+  const userPrompt = `今日のコンテキスト: ${trendContext}${buzzSection}
 
-3パターンのツイートを生成してください。各140文字以内厳守。`;
+上記の海外バイラル情報・事実データを活用して3パターンのツイートを生成してください。各140文字以内厳守。`;
 
   const raw = await callClaude(systemPrompt, userPrompt);
   return parsePatterns(raw);
@@ -241,8 +282,16 @@ async function main() {
   const trendContext = loadTrendContext();
   console.log("📊 トレンドコンテキスト:", trendContext);
 
+  const buzzContext = loadBuzzContext();
+  if (buzzContext) {
+    console.log("🔥 バズキャッシュ読み込み完了:", buzzContext.date);
+    console.log("   海外バイラル:", buzzContext.overseas.length, "件 / 統計データ:", buzzContext.stats.length, "件");
+  } else {
+    console.log("ℹ️  バズキャッシュなし（通常モードで生成）");
+  }
+
   console.log("✍️  Claude APIでX投稿文 A/B/C を生成中...");
-  const patterns = await generateXPatterns(trendContext);
+  const patterns = await generateXPatterns(trendContext, buzzContext);
 
   console.log("\n--- 生成結果 ---");
   console.log("A:", patterns.A);

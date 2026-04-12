@@ -1,0 +1,39 @@
+name: Agent - Monitor (24時間バズ監視)
+
+on:
+  schedule:
+    # 6時間ごと実行 (JST: 3:00 / 9:00 / 15:00 / 21:00)
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  monitor-agent:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm ci
+
+      - name: Run monitor_agent
+        env:
+          ANTHROPIC_API_KEY:      ${{ secrets.ANTHROPIC_API_KEY }}
+          X_API_KEY:              ${{ secrets.X_API_KEY }}
+          X_API_SECRET:           ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN:         ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET:  ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/agents/monitor_agent.cjs
+
+      - name: Commit
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/
+          git diff --staged --quiet || git commit -m "monitor_agent: バズ監視更新 $(date +%Y-%m-%d\ %H:%M)"
+          git pull --no-rebase -X ours origin main
+          git push
