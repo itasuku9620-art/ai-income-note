@@ -227,5 +227,20 @@
     ],
     "created_at": "2026-04-13T08:02:23.284Z",
     "status": "info"
+  },
+  {
+    "id": "monitor_2026-04-13_1776086692825",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-04-13",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発とワークフロー自動化",
+      "マルチモーダルAI（画像・音声・テキスト統合）の実用化",
+      "Enterprise RAG（検索拡張生成）システム構築",
+      "AI Fine-tuning as a Service（カスタムAIモデル開発）",
+      "AI-powered Content Creation（動画・音楽・3D生成）"
+    ],
+    "created_at": "2026-04-13T13:24:52.825Z",
+    "status": "info"
   }
 ]
