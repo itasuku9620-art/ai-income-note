@@ -8,13 +8,13 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 
-const {
-  X_API_KEY,
-  X_API_SECRET,
-  X_ACCESS_TOKEN,
-  X_ACCESS_TOKEN_SECRET,
-  SELECTED_PATTERN,
-} = process.env;
+const clean = (s) => (s || "").replace(/[^\x20-\x7E]/g, "").trim();
+
+const X_API_KEY             = clean(process.env.X_API_KEY);
+const X_API_SECRET          = clean(process.env.X_API_SECRET);
+const X_ACCESS_TOKEN        = clean(process.env.X_ACCESS_TOKEN);
+const X_ACCESS_TOKEN_SECRET = clean(process.env.X_ACCESS_TOKEN_SECRET);
+const SELECTED_PATTERN      = process.env.SELECTED_PATTERN;
 
 // ─────────────────────────────────────────────
 // ユーティリティ
