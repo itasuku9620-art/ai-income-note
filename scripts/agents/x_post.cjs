@@ -133,27 +133,24 @@ function buildOAuthHeader(method, url, params) {
 }
 
 // ─────────────────────────────────────────────
-// X API v1.1 ツイート投稿（Project不要）
+// X API v2 ツイート投稿
 // ─────────────────────────────────────────────
 
 async function postTweet(text) {
   const { default: fetch } = await import("node-fetch");
 
-  const url    = "https://api.twitter.com/1.1/statuses/update.json";
+  const url    = "https://api.twitter.com/2/tweets";
   const method = "POST";
-  const params = { status: text };
 
-  const authHeader = buildOAuthHeader(method, url, params);
-
-  const body = new URLSearchParams(params).toString();
+  const authHeader = buildOAuthHeader(method, url, {});
 
   const response = await fetch(url, {
     method,
     headers: {
       Authorization:  authHeader,
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
-    body,
+    body: JSON.stringify({ text }),
   });
 
   const rawText = await response.text();
@@ -164,7 +161,7 @@ async function postTweet(text) {
   }
 
   const data = rawText ? JSON.parse(rawText) : {};
-  return { data: { id: String(data.id_str || data.id || "unknown") } };
+  return { data: { id: String(data?.data?.id || "unknown") } };
 }
 
 // ─────────────────────────────────────────────
