@@ -156,15 +156,15 @@ async function postTweet(text) {
     body,
   });
 
-  const data = await response.json();
+  const rawText = await response.text();
+  console.log(`X API レスポンス: ${response.status} ${rawText.slice(0, 200)}`);
 
   if (!response.ok) {
-    throw new Error(
-      `X API エラー: ${response.status} ${JSON.stringify(data)}`
-    );
+    throw new Error(`X API エラー: ${response.status} ${rawText}`);
   }
 
-  return { data: { id: String(data.id_str || data.id) } };
+  const data = rawText ? JSON.parse(rawText) : {};
+  return { data: { id: String(data.id_str || data.id || "unknown") } };
 }
 
 // ─────────────────────────────────────────────
