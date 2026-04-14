@@ -227,5 +227,73 @@
     ],
     "created_at": "2026-04-13T08:02:23.284Z",
     "status": "info"
+  },
+  {
+    "id": "monitor_2026-04-13_1776086692825",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-04-13",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発とワークフロー自動化",
+      "マルチモーダルAI（画像・音声・テキスト統合）の実用化",
+      "Enterprise RAG（検索拡張生成）システム構築",
+      "AI Fine-tuning as a Service（カスタムAIモデル開発）",
+      "AI-powered Content Creation（動画・音楽・3D生成）"
+    ],
+    "created_at": "2026-04-13T13:24:52.825Z",
+    "status": "info"
+  },
+  {
+    "id": "monitor_2026-04-13_1776107650069",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-04-13",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発とビジネス自動化",
+      "生成AIを活用したコンテンツマネタイズ",
+      "ノーコード×AIツールによる副業創出",
+      "AI画像・動画生成の商用利用拡大",
+      "AIコンサルティングサービスの需要急増"
+    ],
+    "created_at": "2026-04-13T19:14:10.069Z",
+    "status": "info"
+  },
+  {
+    "id": "monitor_2026-04-14_1776133785284",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-04-14",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発・カスタマイズサービス",
+      "企業向けAI導入コンサルティング",
+      "AI生成コンテンツの商用利用最適化",
+      "小規模事業者向けAI業務自動化支援",
+      "AI活用によるクリエイティブワーク収益化"
+    ],
+    "created_at": "2026-04-14T02:29:45.284Z",
+    "status": "info"
+  },
+  {
+    "id": "x_2026-04-14_1776139922891",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-04-14",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で1.8万いいね│「2024年にAIスキルを持つフリーラ…",
+      "B": "【データ】マッキンゼーの調査によると、生成AIは世界経済に年…",
+      "C": "いま海外でバズってる話→GitHub開発者がAI使って55%…"
+    },
+    "pending_file": "x_2026-04-14.md",
+    "created_at": "2026-04-14T04:12:02.891Z",
+    "status": "pending"
+  },
+  {
+    "id": "note_2026-04-14_1776141935318",
+    "type": "note_approval_required",
+    "title": "note記事承認待ち - 2026-04-14",
+    "message": "note_agentが記事の下書きを生成しました。ポータルで確認してください。",
+    "pending_file": "note_2026-04-14.md",
+    "created_at": "2026-04-14T04:45:35.318Z",
+    "status": "pending"
   }
 ]
