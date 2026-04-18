@@ -550,5 +550,19 @@
     ],
     "created_at": "2026-04-18T02:13:57.135Z",
     "status": "info"
+  },
+  {
+    "id": "x_2026-04-18_1776484228951",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-04-18",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で4,100いいね│「世界経済フォーラムの予測では、AI…",
+      "B": "【データ】GitHub Copilot利用者のコーディング作…",
+      "C": "いま海外でバズってる話→AI関連フリーランサーへの需要が前年…"
+    },
+    "pending_file": "x_2026-04-18.md",
+    "created_at": "2026-04-18T03:50:28.951Z",
+    "status": "pending"
   }
 ]
