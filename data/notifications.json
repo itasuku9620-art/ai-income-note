@@ -754,5 +754,19 @@
     ],
     "created_at": "2026-05-02T02:37:18.555Z",
     "status": "info"
+  },
+  {
+    "id": "x_2026-05-02_1777695656642",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-05-02",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で1.5万いいね│「世界経済フォーラムは2025年までに…",
+      "B": "【データ】UpWorkの2024年レポートによると、AIスキ…",
+      "C": "いま海外でバズってる話→GitHub調査でAI Copilo…"
+    },
+    "pending_file": "x_2026-05-02.md",
+    "created_at": "2026-05-02T04:20:56.642Z",
+    "status": "pending"
   }
 ]
