@@ -837,5 +837,19 @@
     ],
     "created_at": "2026-05-03T02:48:31.177Z",
     "status": "info"
+  },
+  {
+    "id": "x_2026-05-03_1777783390421",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-05-03",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で1.5万いいね│「生成AIは世界経済に年間2兆6000…",
+      "B": "【データ】マッキンゼーの調査によると、生成AIは世界経済に年…",
+      "C": "いま海外でバズってる話→GitHub Copilotで開発者…"
+    },
+    "pending_file": "x_2026-05-03.md",
+    "created_at": "2026-05-03T04:43:10.421Z",
+    "status": "pending"
   }
 ]
