@@ -934,5 +934,14 @@
     "pending_file": "x_2026-05-04.md",
     "created_at": "2026-05-04T04:42:46.230Z",
     "status": "pending"
+  },
+  {
+    "id": "note_2026-05-04_1777872847485",
+    "type": "note_approval_required",
+    "title": "note記事承認待ち - 2026-05-04",
+    "message": "note_agentが記事の下書きを生成しました。ポータルで確認してください。",
+    "pending_file": "note_2026-05-04.md",
+    "created_at": "2026-05-04T05:34:07.485Z",
+    "status": "pending"
   }
 ]
