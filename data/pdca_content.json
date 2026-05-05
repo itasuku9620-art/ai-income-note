@@ -189,8 +189,18 @@
         "C": "いま海外でバズってる話→AI関連スキルを持つフリーランサーへの需要が250%増加中。日本でも同じこと"
       },
       "status": "pending_approval"
+    },
+    {
+      "date": "2026-05-05",
+      "trend_context": "今日のトレンドキーワード: AI動画編集で副業、ChatGPT note収益化、AI画像生成 稼ぐ、AI ライティング副業、Claude活用 収益化",
+      "patterns_generated": {
+        "A": "海外で2.5万いいね│「ChatGPTの週間利用者数が1億人を突破。この規模感を考えてみてほしい。人",
+        "B": "【データ】GitHub Impact Report 2023によると、AI導入により開発者の生産性が",
+        "C": "いま海外でバズってる話→AIフリーランサーへの需要が前年比250%増加。日本でも同じことできる理由→"
+      },
+      "status": "pending_approval"
     }
   ],
-  "total_generated": 19,
-  "last_run": "2026-05-04T04:42:46.231Z"
+  "total_generated": 20,
+  "last_run": "2026-05-05T04:18:51.103Z"
 }
