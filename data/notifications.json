@@ -1086,5 +1086,19 @@
     ],
     "created_at": "2026-05-06T02:44:10.667Z",
     "status": "info"
+  },
+  {
+    "id": "x_2026-05-06_1778042172879",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-05-06",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で3200いいね│「マッキンゼーの最新分析では、生成AI…",
+      "B": "【データ】GitHub調査によると、AI Copilotを使…",
+      "C": "いま海外でバズってる話→Upworkで2024年にAI関連フ…"
+    },
+    "pending_file": "x_2026-05-06.md",
+    "created_at": "2026-05-06T04:36:12.879Z",
+    "status": "pending"
   }
 ]

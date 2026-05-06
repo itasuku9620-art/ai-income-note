@@ -199,8 +199,18 @@
         "C": "いま海外でバズってる話→AIフリーランサーへの需要が前年比250%増加。日本でも同じことできる理由→"
       },
       "status": "pending_approval"
+    },
+    {
+      "date": "2026-05-06",
+      "trend_context": "今日のトレンドキーワード: AI画像生成副業、ChatGPTnote収益化、AI動画編集で稼ぐ、AIライティング副業、AI音声合成収益",
+      "patterns_generated": {
+        "A": "海外で3200いいね│「マッキンゼーの最新分析では、生成AIが世界経済に年間2兆6000億から4兆4",
+        "B": "【データ】GitHub調査によると、AI Copilotを使用した開発者はタスクを55%高速で完了。",
+        "C": "いま海外でバズってる話→Upworkで2024年にAI関連フリーランサーの需要が250%急増中。日本"
+      },
+      "status": "pending_approval"
     }
   ],
-  "total_generated": 20,
-  "last_run": "2026-05-05T04:18:51.103Z"
+  "total_generated": 21,
+  "last_run": "2026-05-06T04:36:12.880Z"
 }
