@@ -1426,5 +1426,20 @@
     ],
     "created_at": "2026-05-10T08:06:56.027Z",
     "status": "info"
+  },
+  {
+    "id": "monitor_2026-05-10_1778418990619",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-05-10",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent Development",
+      "Multimodal AI Applications",
+      "AI-Human Collaboration",
+      "Prompt Engineering Careers",
+      "AI Freelancing Platforms"
+    ],
+    "created_at": "2026-05-10T13:16:30.619Z",
+    "status": "info"
   }
 ]
