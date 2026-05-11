@@ -1456,5 +1456,20 @@
     ],
     "created_at": "2026-05-10T19:02:36.728Z",
     "status": "info"
+  },
+  {
+    "id": "monitor_2026-05-11_1778469987064",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-05-11",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発とワークフロー自動化",
+      "Multimodal AI（画像・音声・テキスト統合）活用",
+      "AI Fine-tuning（カスタムモデル構築）サービス",
+      "Voice AI Clone・音声合成ビジネス",
+      "AI-Powered Content Creation（動画・記事・デザイン）"
+    ],
+    "created_at": "2026-05-11T03:26:27.064Z",
+    "status": "info"
   }
 ]
