@@ -1622,5 +1622,20 @@
     ],
     "created_at": "2026-05-29T09:53:07.403Z",
     "status": "info"
+  },
+  {
+    "id": "monitor_2026-05-29_1780068393664",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-05-29",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発とその収益化手法",
+      "GitHub Copilot等AI開発ツールによる生産性革命",
+      "ChatGPT Custom GPTsを活用したニッチビジネス",
+      "AI画像生成による創作活動の商業化",
+      "企業向けAI導入コンサルティングサービス"
+    ],
+    "created_at": "2026-05-29T15:26:33.664Z",
+    "status": "info"
   }
 ]
