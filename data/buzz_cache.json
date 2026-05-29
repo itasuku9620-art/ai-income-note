@@ -1,87 +1,87 @@
 {
   "date": "2026-05-29",
-  "updated_at": "2026-05-29T15:26:33.663Z",
+  "updated_at": "2026-05-29T20:24:01.636Z",
   "method": "claude",
   "x_viral": [],
   "viral_overseas": [
     {
-      "text": "GitHub Copilot study shows 55% productivity boost for developers. Meanwhile, Upwork reports 250% surge in AI freelancer demand. The data is clear: AI skills = career acceleration 📈 #AIproductivity #TechCareers",
-      "ja_summary": "GitHub Copilot利用で開発者の生産性が55%向上し、Upworkではフリーランサー向けAI案件需要が250%増加。データが示すのは「AIスキル＝キャリア加速」という明確な事実です。",
-      "citation": "GitHub Impact of AI on Developer Productivity 2023 / Upwork Future Workforce Report 2024",
-      "likes_estimate": 8500,
-      "topic": "AI生産性向上",
-      "account_type": "テックアナリスト"
+      "text": "GitHub's 2023 research shows developers using AI coding assistants completed tasks 55% faster. The productivity revolution isn't coming - it's here. Time to adapt or get left behind. #AIProductivity #DeveloperTools",
+      "ja_summary": "ギットハブの調査によると、AI支援ツールを使用する開発者は作業完了速度が55%向上したことが判明。生産性革命は既に現実となっており、適応が急務。",
+      "citation": "GitHub「The Impact of AI on Developer Productivity」2023",
+      "likes_estimate": 1200,
+      "topic": "AI開発生産性",
+      "account_type": "研究者"
     },
     {
-      "text": "McKinsey's latest: Generative AI could add $2.6-4.4 trillion annually to global economy. That's bigger than the entire UK GDP. We're not just talking about efficiency gains anymore - this is economic transformation. #GenAI #EconomicImpact",
-      "ja_summary": "マッキンゼー最新レポートによると、生成AIは世界経済に年間2.6〜4.4兆ドルの価値を追加する可能性があります。これは英国のGDP全体を上回る規模で、単なる効率化を超えた経済変革を意味します。",
-      "citation": "McKinsey Global Institute The economic potential of generative AI 2023",
-      "likes_estimate": 12000,
-      "topic": "AI経済インパクト",
-      "account_type": "経済研究者"
+      "text": "Upwork reports 250% increase in AI freelancer demand in 2024. Companies desperately need AI-skilled talent. Perfect storm for solo entrepreneurs ready to ride the wave. #AIFreelancing #FutureOfWork",
+      "ja_summary": "アップワークの報告では、AI関連フリーランサーの需要が250%増加。企業がAIスキル人材を求めており、独立起業家にとって絶好の機会。",
+      "citation": "Upwork「Future Workforce Report 2024」",
+      "likes_estimate": 890,
+      "topic": "AIフリーランス市場",
+      "account_type": "アナリスト"
     },
     {
-      "text": "WEF predicts 97 million new AI-related jobs by 2025. While some roles disappear, the net effect is job creation. The key? Reskilling. The future belongs to humans who can work WITH AI, not against it. #FutureOfWork #AIJobs",
-      "ja_summary": "世界経済フォーラムは2025年までに97百万件のAI関連雇用が創出されると予測。一部の職種は消失するものの、全体としては雇用創出効果があります。重要なのはリスキル。未来はAIと対立するのではなく、協働できる人材のものです。",
-      "citation": "World Economic Forum Future of Jobs Report 2025",
-      "likes_estimate": 7200,
+      "text": "WEF predicts 97 million new AI-related jobs by 2025. While some roles disappear, net job creation is massive. The question isn't IF AI will create opportunities, but WHICH ones you'll seize. #AIJobs #CareerPivot",
+      "ja_summary": "世界経済フォーラムは2025年までにAI関連で9700万件の新規雇用創出を予測。一部職種は消滅するが、純増は大幅。どの機会を掴むかが重要。",
+      "citation": "World Economic Forum「Future of Jobs Report 2025」",
+      "likes_estimate": 1450,
       "topic": "AI雇用創出",
-      "account_type": "労働市場専門家"
-    },
-    {
-      "text": "ChatGPT now has 100M+ weekly users. That's faster adoption than any consumer tech in history. If you're not leveraging AI for your side hustle yet, you're already behind the curve. The early movers are capturing the value. #ChatGPT #SideHustle",
-      "ja_summary": "ChatGPTの週間ユーザー数が1億人を突破。これは消費者向け技術史上最速の普及です。副業にAIを活用していないなら、すでに遅れをとっています。先行者が価値を独占している状況です。",
-      "citation": "OpenAI公式統計 2024年",
-      "likes_estimate": 9800,
-      "topic": "AI普及速度",
       "account_type": "起業家"
     },
     {
-      "text": "Stanford AI Index 2024: Private AI investment hit $25.2B in 2023. But here's the kicker - most value creation is happening at the application layer, not foundation models. Opportunity for builders is MASSIVE. #AIInvestment #StartupOpportunity",
-      "ja_summary": "スタンフォードAIインデックス2024年版によると、民間AI投資は2023年に252億ドルに達成。注目すべきは、価値創造の大部分が基盤モデルではなくアプリケーション層で起きていること。構築者にとって機会は巨大です。",
-      "citation": "Stanford HAI AI Index Report 2024",
-      "likes_estimate": 6500,
-      "topic": "AI投資動向",
-      "account_type": "ベンチャーキャピタリスト"
+      "text": "ChatGPT hit 100M+ weekly active users in 2024. That's more than Netflix or TikTok at their peak adoption rates. We're witnessing the fastest technology adoption in human history. #ChatGPT #AIAdoption",
+      "ja_summary": "チャットGPTの週間アクティブユーザーが1億人を突破。ネットフリックスやティックトック最盛期を上回る普及速度で、人類史上最速の技術採用を目撃している。",
+      "citation": "OpenAI公式統計2024",
+      "likes_estimate": 2100,
+      "topic": "AI普及速度",
+      "account_type": "アナリスト"
+    },
+    {
+      "text": "McKinsey estimates generative AI could add $2.6-4.4 trillion annually to global economy. That's equivalent to adding another Germany or Japan to world GDP. Massive value creation ahead. #GenerativeAI #EconomicImpact",
+      "ja_summary": "マッキンゼーは生成AIが世界経済に年間2兆6千億から4兆4千億ドルの価値を追加すると試算。ドイツや日本のGDPに匹敵する規模の価値創造が見込まれる。",
+      "citation": "McKinsey Global Institute「The economic potential of generative AI」2023",
+      "likes_estimate": 1680,
+      "topic": "AI経済インパクト",
+      "account_type": "研究者"
     }
   ],
   "viral_stats": [
     {
-      "fact": "開発者がGitHub Copilotを使用することで、コーディング速度が55%向上し、タスク完了率が大幅に改善された",
-      "source_hint": "GitHub公式調査2023年",
-      "citation": "GitHub Impact of AI on Developer Productivity 2023",
-      "ja_use": "プログラミング副業の効率化、時給向上の根拠として活用可能"
+      "fact": "AI支援ツール使用により開発者の生産性が55%向上",
+      "source_hint": "GitHub開発者生産性調査",
+      "citation": "GitHub「The Impact of AI on Developer Productivity」2023",
+      "ja_use": "プログラミング副業の効率化事例として活用可能"
     },
     {
-      "fact": "生成AIは世界経済に年間2.6兆〜4.4兆ドルの経済価値をもたらす可能性がある",
-      "source_hint": "マッキンゼー・グローバル・インスティテュート",
-      "citation": "McKinsey Global Institute The economic potential of generative AI 2023",
-      "ja_use": "AI市場の将来性を説明する際の強力な裏付けデータ"
+      "fact": "AIフリーランサーへの需要が前年比250%増加",
+      "source_hint": "アップワーク労働市場レポート",
+      "citation": "Upwork「Future Workforce Report 2024」",
+      "ja_use": "AI関連スキルの市場価値の高さを示す根拠として使用"
     },
     {
-      "fact": "2025年までにAI関連で97百万件の新規雇用が創出される予測",
-      "source_hint": "世界経済フォーラム雇用レポート",
-      "citation": "World Economic Forum Future of Jobs Report 2025",
-      "ja_use": "AI学習の必要性とキャリア機会の説明に効果的"
+      "fact": "2025年までにAI関連で9700万件の新規雇用創出予測",
+      "source_hint": "世界経済フォーラム雇用予測",
+      "citation": "World Economic Forum「Future of Jobs Report 2025」",
+      "ja_use": "AI分野への転職・副業参入の正当性を裏付ける統計"
     },
     {
-      "fact": "AIを活用するフリーランサーへの需要が前年比250%増加",
-      "source_hint": "Upwork労働力調査2024年",
-      "citation": "Upwork Future Workforce Report 2024",
-      "ja_use": "AIスキルを活かした副業の需要急増を示す具体的証拠"
+      "fact": "生成AIの経済効果は年間最大4兆4千億ドル",
+      "source_hint": "マッキンゼー経済インパクト分析",
+      "citation": "McKinsey Global Institute「The economic potential of generative AI」2023",
+      "ja_use": "AI市場の成長ポテンシャルを示す決定的データ"
     },
     {
-      "fact": "ChatGPTの週間アクティブユーザー数が1億人を突破",
-      "source_hint": "OpenAI公式発表",
-      "citation": "OpenAI公式統計 2024年",
-      "ja_use": "AI普及の速さと市場規模の大きさを示す指標として活用"
+      "fact": "ChatGPTの週間アクティブユーザーが1億人突破",
+      "source_hint": "オープンAI公式発表",
+      "citation": "OpenAI公式統計2024",
+      "ja_use": "AI普及の現実性とユーザー基盤の大きさを証明する事例"
     }
   ],
   "hot_topics": [
-    "AI Agent開発とその収益化手法",
-    "GitHub Copilot等AI開発ツールによる生産性革命",
-    "ChatGPT Custom GPTsを活用したニッチビジネス",
-    "AI画像生成による創作活動の商業化",
-    "企業向けAI導入コンサルティングサービス"
+    "AI Agent開発とカスタマイズ需要",
+    "企業向けRAGシステム構築",
+    "AIアート・コンテンツ生成サービス",
+    "AI教育・研修プログラム提供",
+    "業界特化型AIツール開発"
   ]
 }
