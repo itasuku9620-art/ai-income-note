@@ -1750,5 +1750,19 @@
     ],
     "created_at": "2026-05-31T03:42:20.291Z",
     "status": "info"
+  },
+  {
+    "id": "x_2026-05-31_1780204943185",
+    "type": "approval_required",
+    "title": "X投稿承認待ち - 2026-05-31",
+    "message": "content_agentが新しいX投稿文A/B/Cを生成しました。ポータルで承認してください。",
+    "patterns": {
+      "A": "海外で1.5万いいね│「世界経済フォーラムは2025年までに…",
+      "B": "【データ】Upworkの調査によると、2024年にAIスキル…",
+      "C": "いま海外でバズってる話→GitHub Copilotで開発者…"
+    },
+    "pending_file": "x_2026-05-31.md",
+    "created_at": "2026-05-31T05:22:23.185Z",
+    "status": "pending"
   }
 ]
