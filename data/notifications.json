@@ -1788,5 +1788,20 @@
     ],
     "created_at": "2026-05-31T08:43:46.917Z",
     "status": "info"
+  },
+  {
+    "id": "monitor_2026-05-31_1780234990317",
+    "type": "buzz_update",
+    "title": "バズ監視更新 - 2026-05-31",
+    "message": "海外バイラルコンテンツ5件・事実データ5件を収集しました",
+    "hot_topics": [
+      "AI Agent開発",
+      "Retrieval-Augmented Generation",
+      "マルチモーダルAI活用",
+      "AI倫理とガバナンス",
+      "エンタープライズAI導入"
+    ],
+    "created_at": "2026-05-31T13:43:10.317Z",
+    "status": "info"
   }
 ]
