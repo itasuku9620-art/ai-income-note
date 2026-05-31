@@ -1764,5 +1764,14 @@
     "pending_file": "x_2026-05-31.md",
     "created_at": "2026-05-31T05:22:23.185Z",
     "status": "pending"
+  },
+  {
+    "id": "note_2026-05-31_1780208286396",
+    "type": "note_approval_required",
+    "title": "note記事承認待ち - 2026-05-31",
+    "message": "note_agentが記事の下書きを生成しました。ポータルで確認してください。",
+    "pending_file": "note_2026-05-31.md",
+    "created_at": "2026-05-31T06:18:06.396Z",
+    "status": "pending"
   }
 ]
